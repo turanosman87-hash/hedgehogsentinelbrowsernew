@@ -1,4 +1,4 @@
-name: Hedgehog Firefox EXE Builder
+name: Hedgehog Final Build
 
 on: [push]
 
@@ -7,19 +7,18 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python
+    - name: Setup Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.9'
-    - name: Install Dependencies
+    - name: Install
+      run: pip install PyQt5 PyQtWebEngine pyinstaller
+    - name: Build EXE Package
       run: |
-        pip install PyQt5 PyQtWebEngine pyinstaller
-    - name: Build EXE Folder
-      run: |
-        # --onedir kullanıyoruz, DLL hatalarını en aza indirir
-        pyinstaller --onedir --windowed --name "Hedgehog_Sentinel" main.py
-    - name: Upload Artifact
+        # --onedir: Tüm DLL'leri yanına koyar, "bulunamadı" hatasını bitirir
+        pyinstaller --onedir --windowed --noconfirm --name "Hedgehog_Sentinel" main.py
+    - name: Upload
       uses: actions/upload-artifact@v4
       with:
-        name: Hedgehog_Sentinel_Windows
+        name: Hedgehog_Sentinel_Windows_Final
         path: dist/Hedgehog_Sentinel/
