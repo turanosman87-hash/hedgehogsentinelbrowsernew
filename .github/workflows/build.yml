@@ -1,4 +1,4 @@
-name: Hedgehog Sentinel Nuitka Build
+name: Hedgehog Classic Build
 
 on: [push]
 
@@ -10,15 +10,15 @@ jobs:
     - name: Setup Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
-    - name: Install Nuitka and PyQt6
-      run: pip install PyQt6 PyQt6-WebEngine nuitka
-    - name: Build with Nuitka (Standalone)
+        python-version: '3.9' # Daha kararlı bir sürüm
+    - name: Install PyQt5
+      run: pip install PyQt5 PyQtWebEngine pyinstaller
+    - name: Build Standalone EXE
       run: |
-        # Bu komut kodu C++'a çevirir, DLL hatalarını bitirir
-        python -m nuitka --standalone --onefile --enable-plugin=qt-plugins --windows-disable-console --output-filename=Hedgehog_Sentinel.exe main.py
-    - name: Upload Nuitka EXE
+        # PyQt5 ile DLL hatası ihtimali çok düşüktür
+        pyinstaller --onefile --windowed --name "Hedgehog_Sentinel" main.py
+    - name: Upload
       uses: actions/upload-artifact@v4
       with:
-        name: Hedgehog_Sentinel_Ultimate
-        path: Hedgehog_Sentinel.exe
+        name: Hedgehog_Sentinel_Classic
+        path: dist/Hedgehog_Sentinel.exe
