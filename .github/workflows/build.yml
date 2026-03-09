@@ -1,4 +1,4 @@
-name: Hedgehog Firefox EXE
+name: Hedgehog Sentinel EXE Build
 
 on: [push]
 
@@ -7,16 +7,18 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Python Setup
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-    - name: Install
+    - name: Install PyPackagers
       run: pip install PyQt6 PyQt6-WebEngine pyinstaller
-    - name: Build
-      run: pyinstaller --onedir --windowed --collect-all PyQt6 --collect-all PyQt6_WebEngine --name "Hedgehog_Firefox" main.py
-    - name: Upload
+    - name: Build EXE Package
+      run: |
+        # --collect-all komutu o meşhur DLL hatalarını (icuuc vb.) kökten çözer
+        pyinstaller --onedir --windowed --collect-all PyQt6 --collect-all PyQt6_WebEngine --name "Hedgehog_Sentinel" main.py
+    - name: Upload Finished Pack
       uses: actions/upload-artifact@v4
       with:
-        name: Hedgehog_Firefox_Windows
-        path: dist/Hedgehog_Firefox/
+        name: Hedgehog_Sentinel_Windows
+        path: dist/Hedgehog_Sentinel/
